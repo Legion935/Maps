@@ -263,7 +263,7 @@ const App = () => {
   return (
     <Container>
       <Caja>
-        <Titulo>MAPS</Titulo>
+        <Titulo>Calcula tu Ruta:</Titulo>
         <Controls>
           <LabelInput>
             <Label>Origen: </Label>
