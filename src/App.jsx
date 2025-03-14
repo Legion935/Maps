@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import L from 'leaflet';
 import styled from 'styled-components';
 import polyline from 'polyline';
 
-const center = [19.3906594,-99.3084261]; // Coordenadas iniciales (San Francisco)
+const center = [19.3906594,-99.3084261]; // Coordenadas iniciales (CDMX)
 const API_KEY = "5b3ce3597851110001cf6248287a589eb7ef420e9da9e17392b88fb8"; // Reemplaza con tu clave de OpenRouteService
 const ORS_URL = "https://api.openrouteservice.org/v2/directions/driving-car";
 const GEOCODE_URL = "https://api.openrouteservice.org/geocode/search";
@@ -138,6 +139,15 @@ const App = () => {
   const [destination, setDestination] = useState('');
   const [markers, setMarkers] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null); // Estado para guardar la información de la ruta
+
+  const markerIcon = new L.Icon({
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [30, 48],  // Tamaño ligeramente mayor del icono (ancho, alto)
+  iconAnchor: [15, 48], // Ajustamos el anclaje del icono a la mitad del icono
+  popupAnchor: [0, -48] // Ajustamos el anclaje del popup
+  });
 
   const getCoordinates = async (address) => {
     try {
@@ -283,7 +293,7 @@ const App = () => {
           <MapContainer center={center} zoom={6} style={{ height: "100%", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {markers.map((pos, index) => (
-              <Marker key={index} position={pos} />
+              <Marker key={index} position={pos} icon={markerIcon}/>
             ))}
             {route.length > 0 && <Polyline positions={route} color="blue" />}
           </MapContainer>
